@@ -1,37 +1,51 @@
 package jc.geecity.taihua.me;
 
 import android.os.Bundle;
-import android.widget.TextView;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
+import com.aspsine.irecyclerview.widget.CustomPtrHeader;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 import com.jaydenxiao.common.commonwidget.NormalTitleBar;
-import com.zanlabs.infinitevpager.InfiniteViewPager;
-import com.zanlabs.infinitevpager.indicator.LinePageIndicator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 import jc.geecity.taihua.R;
-import jc.geecity.taihua.adapter.TopADAdapter;
+import jc.geecity.taihua.adapter.ArtRecycleViewAdapter;
 import jc.geecity.taihua.base.AbsBaseFragment;
-import jc.geecity.taihua.home.bean.TopAdBean;
+import jc.geecity.taihua.test.DataUtil;
 
+/**
+ * 我的
+ */
+@SuppressWarnings("ALL")
 public class MeFragment extends AbsBaseFragment {
 
     @Bind(R.id.ntb)
     NormalTitleBar ntb;
-    @Bind(R.id.view_pager)
-    InfiniteViewPager viewPager;
-    @Bind(R.id.indicator)
-    LinePageIndicator indicator;
-    @Bind(R.id.textView)
-    TextView mTv;
 
-    public static MeFragment newInstance(int number) {
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
+    @Bind(R.id.ptrFrameLayout)
+    PtrClassicFrameLayout mPtrFrame;
+
+    private ArtRecycleViewAdapter recyclerAdapter;
+
+    private int page = 1;
+    private boolean isRefresh;
+    private boolean hasMore = true;
+    private int lastVisibleItem;
+
+    public static MeFragment newInstance(String title) {
         MeFragment homeFragment = new MeFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("number", number);
+        bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
     }
@@ -45,73 +59,110 @@ public class MeFragment extends AbsBaseFragment {
     protected void initUi() {
         ntb.setTitleText("我的");
         ntb.setBackVisibility(false);
-
-        Bundle bundle = getArguments();
-        int number = bundle.getInt("number");
-        mTv.setText(String.valueOf(number));
     }
 
     @Override
     protected void initDatas() {
-        final List<TopAdBean> mList = new ArrayList<>();
+        initList();
+    }
 
-        TopAdBean bean1 = new TopAdBean();
-        bean1.setId(1);
-        bean1.setTitle("大桶水");
-        bean1.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/201781610363506.jpg");
-
-        TopAdBean bean2 = new TopAdBean();
-        bean2.setId(2);
-        bean2.setTitle("花街小镇");
-        bean2.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/201798163638278.jpg");
-
-        TopAdBean bean3 = new TopAdBean();
-        bean3.setId(3);
-        bean3.setTitle("缴费活动");
-        bean3.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/2017915103118909.jpg");
-
-        TopAdBean bean4 = new TopAdBean();
-        bean4.setId(4);
-        bean4.setTitle("家政");
-        bean4.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/2017816155632334.jpg");
-
-        mList.add(bean1);
-        mList.add(bean2);
-        mList.add(bean3);
-        mList.add(bean4);
-
-        TopADAdapter topADAdapter = new TopADAdapter(getActivity(), new TopADAdapter.OnClickEveryAdListener() {
+    /**
+     *
+     */
+    private void initList() {
+        CustomPtrHeader header = new CustomPtrHeader(getActivity(), 1);
+        mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
 
             @Override
-            public void onClickEveryAD(int idx) {
-                ToastUitl.showShort("点击了第" + (idx + 1) + "个广告：" + mList.get(idx).getTitle());
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                page = 1;
+                isRefresh = true;
+                hasMore = true;
+                mHandler.sendEmptyMessageDelayed(CODE_UPT, 3000);
             }
         });
-        topADAdapter.setDataList(mList);
-        viewPager.setAdapter(topADAdapter);
-        viewPager.setAutoScrollTime(3000);
-        viewPager.startAutoScroll();
-        indicator.setViewPager(viewPager);
+        mPtrFrame.setEnabledNextPtrAtOnce(true);
+        mPtrFrame.setOffsetToRefresh(200);
+        mPtrFrame.autoRefresh(true);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setKeepHeaderWhenRefresh(true);
+        mPtrFrame.setHeaderView(header);
+        mPtrFrame.addPtrUIHandler(header);
+
+        recyclerAdapter = new ArtRecycleViewAdapter(getActivity());
+        recycleView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        GridLayoutManager mLayoutMgr = new GridLayoutManager(getActivity(), 2);
+        recycleView.setLayoutManager(mLayoutMgr);
+        recycleView.setAdapter(recyclerAdapter);
     }
 
     @Override
     protected void initListener() {
+        recycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && !isRefresh
+                        && hasMore
+                        && (lastVisibleItem + 1 == recyclerAdapter.getItemCount())) {
+                    if (page <= 3) {
+                        mHandler.sendEmptyMessageDelayed(CODE_UPT, 3000);
+                    } else if (page == 5) {
+                        mHandler.sendEmptyMessageDelayed(CODE_ON_FAILURE, 3000);
+                    } else {
+                        mHandler.sendEmptyMessageDelayed(CODE_NO_MORE, 3000);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                lastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+            }
+        });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (viewPager != null) {
-            viewPager.startAutoScroll();
+    private final int CODE_UPT = 1;
+    private final int CODE_NO_MORE = 2;
+    private final int CODE_ON_FAILURE = 3;
+
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case CODE_UPT:
+                    mPtrFrame.refreshComplete();
+                    page++;
+                    if (isRefresh) {
+                        recyclerAdapter.setHasMore(true);
+                        recyclerAdapter.setError(false);
+                        isRefresh = false;
+                        recyclerAdapter.reset(DataUtil.createItemList());
+                    } else {
+                        recyclerAdapter.addArtList(DataUtil.createItemList());
+                    }
+                    break;
+                case CODE_NO_MORE:
+                    hasMore = false;
+                    if (!isRefresh) {
+                        // 显示没有更多
+                        recyclerAdapter.setHasMore(false);
+                        recyclerAdapter.notifyItemChanged(recyclerAdapter.getItemCount() - 1);
+                    }
+                    break;
+                case CODE_ON_FAILURE:
+                    if (!isRefresh) {
+                        // 显示失败
+                        recyclerAdapter.setError(true);
+                        recyclerAdapter.notifyItemChanged(recyclerAdapter.getItemCount() - 1);
+                    } else {
+                        ToastUitl.showShort("----- (>_<) ----- 刷新失败");
+                    }
+                    break;
+            }
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (viewPager != null) {
-            viewPager.stopAutoScroll();
-        }
-    }
+    };
 }

@@ -3,7 +3,7 @@ package jc.geecity.taihua.util;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
 import com.youth.banner.loader.ImageLoader;
 
 import jc.geecity.taihua.home.bean.TopAdBean;
@@ -11,7 +11,7 @@ import jc.geecity.taihua.home.bean.TopAdBean;
 /**
  * 用于Banner加载图片使用
  */
-public class GlideImageLoader extends ImageLoader {
+public class BannerGlideImageLoader extends ImageLoader {
 
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
@@ -25,9 +25,6 @@ public class GlideImageLoader extends ImageLoader {
         // 将传递的Object强制转化为自己添加进入的广告实体类
         TopAdBean topAdBean = (TopAdBean) path;
         // Glide 加载图片简单用法
-        Glide.with(context).load(topAdBean.getImage())
-                .centerCrop()
-                .crossFade()
-                .into(imageView);
+        ImageLoaderUtils.display(context, imageView, topAdBean.getImage());
     }
 }

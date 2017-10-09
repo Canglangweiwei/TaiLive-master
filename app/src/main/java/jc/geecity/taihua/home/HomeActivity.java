@@ -90,11 +90,11 @@ public class HomeActivity extends AbsBaseActivity {
 
     @Override
     protected void initDatas() {
-        fragments.add(HomeFragment.newInstance(1));
-        fragments.add(ServiceFragment.newInstance(2));
-        fragments.add(CommunityFragment.newInstance(3));
-        fragments.add(BusinessFragment.newInstance(4));
-        fragments.add(MeFragment.newInstance(5));
+        fragments.add(HomeFragment.newInstance("首页"));
+        fragments.add(ServiceFragment.newInstance("服务"));
+        fragments.add(CommunityFragment.newInstance("社区"));
+        fragments.add(BusinessFragment.newInstance("商户"));
+        fragments.add(MeFragment.newInstance("我的"));
         showFragment(fragments.get(0));
     }
 

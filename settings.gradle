@@ -2,4 +2,3 @@ include ':app'
 include ':library:common'
 include ':library:photoPicker'
 include ':library:irecyclerview'
-include ':library:infinitevpager';

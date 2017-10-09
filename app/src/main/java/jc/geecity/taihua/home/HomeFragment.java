@@ -16,23 +16,26 @@ import butterknife.Bind;
 import jc.geecity.taihua.R;
 import jc.geecity.taihua.base.AbsBaseFragment;
 import jc.geecity.taihua.home.bean.TopAdBean;
-import jc.geecity.taihua.util.GlideImageLoader;
+import jc.geecity.taihua.util.BannerGlideImageLoader;
 
+/**
+ * 首页
+ */
 public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
 
     @Bind(R.id.ntb)
     NormalTitleBar ntb;
-    @Bind(R.id.main_banner)
+    @Bind(R.id.homeFrg_banner)
     Banner mBanner;
     @Bind(R.id.textView)
     TextView mTv;
 
     private List<TopAdBean> imgUrls;
 
-    public static HomeFragment newInstance(int number) {
+    public static HomeFragment newInstance(String title) {
         HomeFragment homeFragment = new HomeFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("number", number);
+        bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
     }
@@ -48,11 +51,8 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
         ntb.setBackVisibility(false);
 
         Bundle bundle = getArguments();
-        int number = bundle.getInt("number");
-        mTv.setText(String.valueOf(number));
-
-        mBanner.setIndicatorGravity(BannerConfig.RIGHT);
-        mBanner.setOnBannerListener(this);
+        String title = bundle.getString("title");
+        mTv.setText(title);
     }
 
     @Override
@@ -84,18 +84,34 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
         imgUrls.add(bean3);
         imgUrls.add(bean4);
 
+        mBanner.setIndicatorGravity(BannerConfig.RIGHT);
+        mBanner.setBannerStyle(BannerConfig.NUM_INDICATOR);// 显示数字指示器
         mBanner.setImages(imgUrls)
-                .setImageLoader(new GlideImageLoader())
+                .setImageLoader(new BannerGlideImageLoader())
                 .start();
     }
 
     @Override
     protected void initListener() {
-
+        mBanner.setOnBannerListener(this);
     }
 
     @Override
     public void OnBannerClick(int position) {
         ToastUitl.showShort("我点击了第" + (position + 1) + "广告：" + imgUrls.get(position).getTitle());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 开始轮播
+        mBanner.startAutoPlay();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // 结束轮播
+        mBanner.stopAutoPlay();
     }
 }

@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/library/common" />
-            <option value="$PROJECT_DIR$/library/infinitevpager" />
             <option value="$PROJECT_DIR$/library/irecyclerview" />
             <option value="$PROJECT_DIR$/library/photoPicker" />
           </set>

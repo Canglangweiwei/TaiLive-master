@@ -5,33 +5,37 @@ import android.widget.TextView;
 
 import com.jaydenxiao.common.commonutils.ToastUitl;
 import com.jaydenxiao.common.commonwidget.NormalTitleBar;
-import com.zanlabs.infinitevpager.InfiniteViewPager;
-import com.zanlabs.infinitevpager.indicator.LinePageIndicator;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import jc.geecity.taihua.R;
-import jc.geecity.taihua.adapter.TopADAdapter;
 import jc.geecity.taihua.base.AbsBaseFragment;
 import jc.geecity.taihua.home.bean.TopAdBean;
+import jc.geecity.taihua.util.BannerGlideImageLoader;
 
-public class CommunityFragment extends AbsBaseFragment {
+/**
+ * 社区
+ */
+public class CommunityFragment extends AbsBaseFragment implements OnBannerListener {
 
     @Bind(R.id.ntb)
     NormalTitleBar ntb;
-    @Bind(R.id.view_pager)
-    InfiniteViewPager viewPager;
-    @Bind(R.id.indicator)
-    LinePageIndicator indicator;
+    @Bind(R.id.communityFrg_banner)
+    Banner mBanner;
     @Bind(R.id.textView)
     TextView mTv;
 
-    public static CommunityFragment newInstance(int number) {
+    private List<TopAdBean> imgUrls;
+
+    public static CommunityFragment newInstance(String title) {
         CommunityFragment homeFragment = new CommunityFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("number", number);
+        bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
     }
@@ -47,13 +51,13 @@ public class CommunityFragment extends AbsBaseFragment {
         ntb.setBackVisibility(false);
 
         Bundle bundle = getArguments();
-        int number = bundle.getInt("number");
-        mTv.setText(String.valueOf(number));
+        String title = bundle.getString("title");
+        mTv.setText(title);
     }
 
     @Override
     protected void initDatas() {
-        final List<TopAdBean> mList = new ArrayList<>();
+        imgUrls = new ArrayList<>();
 
         TopAdBean bean1 = new TopAdBean();
         bean1.setId(1);
@@ -75,44 +79,39 @@ public class CommunityFragment extends AbsBaseFragment {
         bean4.setTitle("家政");
         bean4.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/2017816155632334.jpg");
 
-        mList.add(bean1);
-        mList.add(bean2);
-        mList.add(bean3);
-        mList.add(bean4);
+        imgUrls.add(bean1);
+        imgUrls.add(bean2);
+        imgUrls.add(bean3);
+        imgUrls.add(bean4);
 
-        TopADAdapter topADAdapter = new TopADAdapter(getActivity(), new TopADAdapter.OnClickEveryAdListener() {
-
-            @Override
-            public void onClickEveryAD(int idx) {
-                ToastUitl.showShort("点击了第" + (idx + 1) + "个广告：" + mList.get(idx).getTitle());
-            }
-        });
-        topADAdapter.setDataList(mList);
-        viewPager.setAdapter(topADAdapter);
-        viewPager.setAutoScrollTime(3000);
-        viewPager.startAutoScroll();
-        indicator.setViewPager(viewPager);
-
+        mBanner.setIndicatorGravity(BannerConfig.RIGHT);
+        mBanner.setBannerStyle(BannerConfig.NUM_INDICATOR);// 显示数字指示器
+        mBanner.setImages(imgUrls)
+                .setImageLoader(new BannerGlideImageLoader())
+                .start();
     }
 
     @Override
     protected void initListener() {
+        mBanner.setOnBannerListener(this);
+    }
 
+    @Override
+    public void OnBannerClick(int position) {
+        ToastUitl.showShort("我点击了第" + (position + 1) + "广告：" + imgUrls.get(position).getTitle());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (viewPager != null) {
-            viewPager.startAutoScroll();
-        }
+        // 开始轮播
+        mBanner.startAutoPlay();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (viewPager != null) {
-            viewPager.stopAutoScroll();
-        }
+        // 结束轮播
+        mBanner.stopAutoPlay();
     }
 }
