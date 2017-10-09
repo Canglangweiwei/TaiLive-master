@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">泰生活</string>
+    <string name="press_twice_exit">再次按返回键退出</string>
+    <string name="exit_directly">直接退出</string>
+    <string name="zone_img_position">circle_img_position</string>
+    <string name="zone_publish_title">不吐不快</string>
+    <string name="circle_publish_empty">发表内容不能为空！</string>
+
+    <string name="expand">全文</string>
+    <string name="shink">收起</string>
+    <string name="content">content</string>
+</resources>
