@@ -11,5 +11,5 @@ public class Constants {
     /**
      * 是否打印LogCat
      */
-    public static final boolean LOG_DEBUG = true;           // 是否打印LogCat
+    public static final int LOG_DEBUG = 10;           // 是否打印LogCat >=10都允许打印，小于0的都不允许打印
 }

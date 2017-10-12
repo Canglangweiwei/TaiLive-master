@@ -23,8 +23,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.ToastUitl;
+import com.jaydenxiao.common.commonutils.XgoLog;
 import com.yuyh.library.imgsel.adapter.FolderListAdapter;
 import com.yuyh.library.imgsel.adapter.ImageListAdapter;
 import com.yuyh.library.imgsel.bean.Folder;
@@ -276,7 +276,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             tempFile = new File(FileUtils.createRootPath(getActivity()) + "/" + System.currentTimeMillis() + ".jpg");
-            LogUtils.logd(tempFile.getAbsolutePath());
+            XgoLog.logd(tempFile.getAbsolutePath());
             FileUtils.createFile(tempFile);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
             startActivityForResult(cameraIntent, REQUEST_CAMERA);

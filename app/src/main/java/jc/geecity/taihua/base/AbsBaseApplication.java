@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.jaydenxiao.common.base.BaseApplication;
-import com.jaydenxiao.common.commonutils.LogUtils;
+import com.jaydenxiao.common.commonutils.XgoLog;
 import com.jaydenxiao.common.config.Constants;
 
 import org.litepal.crud.DataSupport;
@@ -32,7 +32,7 @@ public class AbsBaseApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         sApp = this;
-        LogUtils.logInit(Constants.LOG_DEBUG);
+        XgoLog.logInit(Constants.LOG_DEBUG);
         setApplicationComponent();
     }
 

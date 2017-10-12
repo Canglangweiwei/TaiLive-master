@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
 
+import com.jaydenxiao.common.commonutils.XgoLog;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,8 +16,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
 import java.text.DecimalFormat;
-
-import com.jaydenxiao.common.commonutils.LogUtils;
 
 /**
  * @author yuyh.
@@ -55,12 +55,12 @@ public class FileUtils {
         try {
             File file = new File(dirPath);
             if (file.getParentFile().exists()) {
-                LogUtils.logd("----- 创建文件夹" + file.getAbsolutePath());
+                XgoLog.logd("----- 创建文件夹" + file.getAbsolutePath());
                 file.mkdir();
                 return file.getAbsolutePath();
             } else {
                 createDir(file.getParentFile().getAbsolutePath());
-                LogUtils.logd("----- 创建文件夹" + file.getAbsolutePath());
+                XgoLog.logd("----- 创建文件夹" + file.getAbsolutePath());
                 file.mkdir();
             }
         } catch (Exception e) {
@@ -78,13 +78,13 @@ public class FileUtils {
     public static String createFile(File file) {
         try {
             if (file.getParentFile().exists()) {
-                LogUtils.logd("----- 创建文件" + file.getAbsolutePath());
+                XgoLog.logd("----- 创建文件" + file.getAbsolutePath());
                 file.createNewFile();
                 return file.getAbsolutePath();
             } else {
                 createDir(file.getParentFile().getAbsolutePath());
                 file.createNewFile();
-                LogUtils.logd("----- 创建文件" + file.getAbsolutePath());
+                XgoLog.logd("----- 创建文件" + file.getAbsolutePath());
             }
         } catch (Exception e) {
             e.printStackTrace();

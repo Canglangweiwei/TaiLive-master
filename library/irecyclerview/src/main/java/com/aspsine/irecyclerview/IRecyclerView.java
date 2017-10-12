@@ -20,7 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.aspsine.irecyclerview.widget.LoadMoreFooterView;
-import com.jaydenxiao.common.commonutils.LogUtils;
+import com.jaydenxiao.common.commonutils.XgoLog;
 
 @SuppressWarnings("ALL")
 public class IRecyclerView extends RecyclerView {
@@ -201,7 +201,7 @@ public class IRecyclerView extends RecyclerView {
             startScrollRefreshingStatusToDefaultStatus();
         } else {
             this.mIsAutoRefreshing = false;
-            LogUtils.loge(TAG, "isRefresh = " + refreshing + " current status = " + mStatus);
+            XgoLog.loge(TAG, "isRefresh = " + refreshing + " current status = " + mStatus);
         }
     }
 
@@ -421,7 +421,7 @@ public class IRecyclerView extends RecyclerView {
             case MotionEvent.ACTION_MOVE: {
                 final int index = MotionEventCompat.findPointerIndex(e, mActivePointerId);
                 if (index < 0) {
-                    LogUtils.loge(TAG, "Error processing scroll; pointer index for id " + index + " not found. Did any MotionEvents get skipped?");
+                    XgoLog.loge(TAG, "Error processing scroll; pointer index for id " + index + " not found. Did any MotionEvents get skipped?");
                     return false;
                 }
 
@@ -436,7 +436,7 @@ public class IRecyclerView extends RecyclerView {
 
                 final boolean triggerCondition = isEnabled() && mRefreshEnabled && mRefreshHeaderView != null && isFingerDragging() && canTriggerRefresh();
                 if (DEBUG) {
-                    LogUtils.logi(TAG, "triggerCondition = " + triggerCondition + "; mStatus = " + mStatus + "; dy = " + dy);
+                    XgoLog.logi(TAG, "triggerCondition = " + triggerCondition + "; mStatus = " + mStatus + "; dy = " + dy);
                 }
                 if (triggerCondition) {
 
@@ -661,7 +661,7 @@ public class IRecyclerView extends RecyclerView {
                 break;
             }
             if (DEBUG) {
-                LogUtils.logi(TAG, "onAnimationEnd " + getStatusLog(lastStatus) + " -> " + getStatusLog(mStatus) + " ;refresh view height:" + mRefreshHeaderContainer.getMeasuredHeight());
+                XgoLog.logi(TAG, "onAnimationEnd " + getStatusLog(lastStatus) + " -> " + getStatusLog(mStatus) + " ;refresh view height:" + mRefreshHeaderContainer.getMeasuredHeight());
             }
         }
     };
@@ -743,7 +743,7 @@ public class IRecyclerView extends RecyclerView {
     }
 
     private void printStatusLog() {
-        LogUtils.logi(TAG, getStatusLog(mStatus));
+        XgoLog.logi(TAG, getStatusLog(mStatus));
     }
 
     private String getStatusLog(int status) {

@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.jaydenxiao.common.commonwidget.LoadingDialog;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 import jc.geecity.taihua.R;
@@ -24,7 +24,7 @@ import jc.geecity.taihua.app.AbsAppComponent;
  * Created by Administrator on 2017/9/25 0025.
  */
 @SuppressWarnings("ALL")
-public abstract class AbsBaseActivity extends AppCompatActivity {
+public abstract class AbsBaseActivity extends RxAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
