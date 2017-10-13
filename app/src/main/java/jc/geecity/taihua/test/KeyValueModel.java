@@ -15,7 +15,7 @@ public class KeyValueModel extends BaseResponseModel {
         this.data = data;
     }
 
-    public static class DataBean {
+    public class DataBean {
 
         /**
          * id : 40
