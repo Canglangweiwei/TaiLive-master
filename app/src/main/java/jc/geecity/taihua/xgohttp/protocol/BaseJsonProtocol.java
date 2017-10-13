@@ -40,7 +40,9 @@ public abstract class BaseJsonProtocol {
             subscriber.onError(new Throwable("not data"));
             return;
         }
-        subscriber.onNext(json);                                //  (7)
+        // 过滤BOM头
+        String dataJson = json.replaceAll("\ufeff", "");
+        subscriber.onNext(dataJson);                                //  (7)
         subscriber.onCompleted();
     }
 }

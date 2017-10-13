@@ -47,9 +47,9 @@ public abstract class BaseObjProtocol {
             subscriber.onError(new Throwable("not data"));
             return;
         }
-
-        T data = mGson.fromJson(json, clazz);
-
+        // 过滤BOM头
+        String dataJson = json.replaceAll("\ufeff", "");
+        T data = mGson.fromJson(dataJson, clazz);
         subscriber.onNext(data);
         subscriber.onCompleted();
     }
