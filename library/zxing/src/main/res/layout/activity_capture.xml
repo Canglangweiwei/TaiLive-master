@@ -111,6 +111,7 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
+            android:visibility="gone"
             android:src="@drawable/scan_flashlight" />
     </RelativeLayout>
 </RelativeLayout>

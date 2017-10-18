@@ -46,6 +46,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     private RelativeLayout scanCropView;
     private ImageView scanLine;
     private ImageView backIv;
+    private ImageView capture_flashlight;
 
     private Rect mCropRect = null;
 
@@ -93,6 +94,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_layout);
         scanLine = (ImageView) findViewById(R.id.capture_scan_line);
         backIv = (ImageView) findViewById(R.id.qr_scan_back);
+        capture_flashlight = (ImageView) findViewById(R.id.capture_flashlight);
 
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
