@@ -23,6 +23,7 @@
     <dimen name="spacing_9">9dp</dimen>
     <dimen name="spacing_10">10dp</dimen>
     <dimen name="spacing_15">15dp</dimen>
+    <dimen name="spacing_16">16dp</dimen>
     <dimen name="spacing_20">20dp</dimen>
     <dimen name="spacing_24">24dp</dimen>
     <dimen name="spacing_25">25dp</dimen>

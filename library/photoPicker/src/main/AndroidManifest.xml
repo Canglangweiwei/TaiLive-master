@@ -10,5 +10,4 @@
             android:name=".ImgSelActivity"
             android:theme="@style/SelTheme"/>
     </application>
-
 </manifest>

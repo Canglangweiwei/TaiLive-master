@@ -21,6 +21,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':library:zxing')            // 二维码扫描
     compile project(':library:photoPicker')     // 图片选择
     compile project(':library:irecyclerview')   // 万能适配器和recyclerview
 
