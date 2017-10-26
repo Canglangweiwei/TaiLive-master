@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'// Dagger2配置
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "jc.geecity.taihua"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -24,6 +24,7 @@ dependencies {
     compile project(':library:zxing')            // 二维码扫描
     compile project(':library:photoPicker')     // 图片选择
     compile project(':library:irecyclerview')   // 万能适配器和recyclerview
+    compile project(':library:selectordialog')  // 对话框工具包
 
     // Dagger2
     provided 'javax.annotation:javax.annotation-api:1.2'

@@ -1,6 +1,5 @@
 package jc.geecity.taihua.base;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.jaydenxiao.common.base.BaseApplication;
@@ -8,8 +7,6 @@ import com.jaydenxiao.common.commonutils.XgoLog;
 import com.jaydenxiao.common.config.Constants;
 
 import org.litepal.crud.DataSupport;
-
-import java.util.Stack;
 
 import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.app.DaggerAbsAppComponent;
@@ -19,8 +16,6 @@ import jc.geecity.taihua.me.bean.UserBean;
 public class AbsBaseApplication extends BaseApplication {
 
     public static AbsBaseApplication sApp;
-
-    private Stack<Activity> activityStack;// activity栈
 
     public static AbsBaseApplication get(Context context) {
         return (AbsBaseApplication) context.getApplicationContext();
@@ -83,50 +78,5 @@ public class AbsBaseApplication extends BaseApplication {
      */
     public boolean isLogin() {
         return sApp.getUserInfo() != null;
-    }
-
-    /**
-     * 把一个activity压入栈列中
-     */
-    public void pushActivityToStack(Activity actvity) {
-        if (activityStack == null) {
-            activityStack = new Stack<Activity>();
-        }
-        activityStack.add(actvity);
-    }
-
-    /**
-     * 获取栈顶的activity，先进后出原则
-     */
-    private Activity getLastActivityFromStack() {
-        return activityStack.lastElement();
-    }
-
-    /**
-     * 从栈列中移除一个activity
-     */
-    private void popActivityFromStack(Activity activity) {
-        if (activityStack != null && activityStack.size() > 0) {
-            if (activity != null) {
-                activity.finish();
-                activityStack.remove(activity);
-                activity = null;
-            }
-        }
-    }
-
-    /**
-     * 退出所有activity
-     */
-    public void finishAllActivity() {
-        if (activityStack != null) {
-            while (activityStack.size() > 0) {
-                Activity activity = getLastActivityFromStack();
-                if (activity == null) {
-                    break;
-                }
-                popActivityFromStack(activity);
-            }
-        }
     }
 }
