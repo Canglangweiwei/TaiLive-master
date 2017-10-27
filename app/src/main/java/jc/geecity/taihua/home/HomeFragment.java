@@ -17,6 +17,7 @@ import java.util.TreeMap;
 import butterknife.Bind;
 import butterknife.OnClick;
 import jc.geecity.taihua.R;
+import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseFragment;
 import jc.geecity.taihua.home.bean.TopAdBean;
 import jc.geecity.taihua.test.KeyValueModel;
@@ -50,6 +51,11 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
         bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
+    }
+
+    @Override
+    protected void setupComponent(AbsAppComponent component) {
+
     }
 
     @Override

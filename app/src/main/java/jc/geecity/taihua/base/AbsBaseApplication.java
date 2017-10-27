@@ -4,12 +4,12 @@ import android.content.Context;
 
 import com.jaydenxiao.common.base.BaseApplication;
 import com.jaydenxiao.common.commonutils.XgoLog;
-import com.jaydenxiao.common.config.Constants;
 
 import org.litepal.crud.DataSupport;
 
 import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.app.DaggerAbsAppComponent;
+import jc.geecity.taihua.config.AppConfig;
 import jc.geecity.taihua.me.bean.UserBean;
 
 @SuppressWarnings("ALL")
@@ -27,7 +27,7 @@ public class AbsBaseApplication extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         sApp = this;
-        XgoLog.logInit(Constants.LOG_DEBUG);
+        XgoLog.logInit(AppConfig.LOG_DEBUG);
         setApplicationComponent();
     }
 

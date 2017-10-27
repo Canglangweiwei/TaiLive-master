@@ -14,6 +14,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import jc.geecity.taihua.R;
+import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseFragment;
 import jc.geecity.taihua.home.bean.TopAdBean;
 import jc.geecity.taihua.util.BannerGlideImageLoader;
@@ -38,6 +39,11 @@ public class BusinessFragment extends AbsBaseFragment implements OnBannerListene
         bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
+    }
+
+    @Override
+    protected void setupComponent(AbsAppComponent component) {
+
     }
 
     @Override

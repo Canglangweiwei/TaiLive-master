@@ -7,6 +7,7 @@ import com.jaydenxiao.common.commonwidget.NormalTitleBar;
 
 import butterknife.Bind;
 import jc.geecity.taihua.R;
+import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseFragment;
 
 /**
@@ -27,6 +28,11 @@ public class ServiceFragment extends AbsBaseFragment {
         bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
+    }
+
+    @Override
+    protected void setupComponent(AbsAppComponent component) {
+
     }
 
     @Override

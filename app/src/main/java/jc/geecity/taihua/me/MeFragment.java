@@ -18,6 +18,7 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import jc.geecity.taihua.R;
 import jc.geecity.taihua.adapter.ArtRecycleViewAdapter;
+import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseFragment;
 import jc.geecity.taihua.test.DataUtil;
 
@@ -48,6 +49,11 @@ public class MeFragment extends AbsBaseFragment {
         bundle.putString("title", title);
         homeFragment.setArguments(bundle);
         return homeFragment;
+    }
+
+    @Override
+    protected void setupComponent(AbsAppComponent component) {
+
     }
 
     @Override
@@ -159,7 +165,7 @@ public class MeFragment extends AbsBaseFragment {
                         recyclerAdapter.setError(true);
                         recyclerAdapter.notifyItemChanged(recyclerAdapter.getItemCount() - 1);
                     } else {
-                        ToastUitl.showShort("----- (>_<) ----- 刷新失败");
+                        ToastUitl.showShort("刷新失败");
                     }
                     break;
             }

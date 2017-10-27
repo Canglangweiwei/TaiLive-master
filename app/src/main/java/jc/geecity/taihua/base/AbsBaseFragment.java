@@ -10,11 +10,25 @@ import android.view.ViewGroup;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import butterknife.ButterKnife;
+import jc.geecity.taihua.app.AbsAppComponent;
 
 @SuppressWarnings("ALL")
 public abstract class AbsBaseFragment extends RxFragment {
 
     protected View mRootView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupComponent(AbsBaseApplication.get(getActivity()).component());
+    }
+
+    /**
+     * Dagger2绑定
+     *
+     * @param component AppComponent
+     */
+    protected abstract void setupComponent(AbsAppComponent component);
 
     @Nullable
     @Override
