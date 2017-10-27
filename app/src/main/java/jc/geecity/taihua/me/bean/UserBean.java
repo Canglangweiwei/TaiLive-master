@@ -12,7 +12,25 @@ import java.io.Serializable;
  */
 @SuppressWarnings("ALL")
 public class UserBean extends DataSupport implements Serializable {
-
+    /**
+     * userid : 42
+     * departId : 13
+     * bumenName : 集团总部
+     * realName : 系统管理员
+     * position : 系统管理员
+     * pic : http://0.89892528.cn:8700/photos/user_image/42_1499071867.png
+     * glc :
+     * glc_name :
+     * copyright : 聚城管家
+     * company : 聚城物业
+     * oaServer : http://0.89892528.cn:8888/
+     * server : http://0.89892528.cn:8700
+     * oaMethod : pda/AppMywork.aspx
+     * areaId : 1
+     * auth : 0
+     * hx_header : 1000
+     * zhaohu : 中午好, 系统管理员( 系统管理员 )
+     */
     private int userid;              // 用户id
     private int departId;           // 部门id
     private String bumenName;       // 部门
@@ -21,9 +39,9 @@ public class UserBean extends DataSupport implements Serializable {
     private String password;        // 密码
     private String position;        // 职位
     private String pic;             // 用户头像
-    private String areaId;          // 小区id
     private String glc;             // 管理处
     private String glc_name;        // 管理处
+    private String areaId;
     private int auth;               // 用户权限
     private String copyright;       // 版权
     private String company;         // 所属物业公司
@@ -31,6 +49,7 @@ public class UserBean extends DataSupport implements Serializable {
     private String server;
     private String oaMethod;        // oa接口方法名
     private String hx_header;       // 环信账号头
+
     private String zhaohu;
 
     public int getUserid() {
@@ -97,14 +116,6 @@ public class UserBean extends DataSupport implements Serializable {
         this.pic = pic;
     }
 
-    public String getAreaId() {
-        return areaId;
-    }
-
-    public void setAreaId(String areaId) {
-        this.areaId = areaId;
-    }
-
     public String getGlc() {
         return glc;
     }
@@ -119,6 +130,14 @@ public class UserBean extends DataSupport implements Serializable {
 
     public void setGlc_name(String glc_name) {
         this.glc_name = glc_name;
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
     }
 
     public int getAuth() {

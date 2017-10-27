@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="已读"
-                android:textColor="@color/color_38ADFF" />
+                android:textColor="@color/color_435354" />
 
             <ImageView
                 android:id="@+id/iv_page2_expand"

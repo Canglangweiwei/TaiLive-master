@@ -52,14 +52,16 @@ public class LoginPresenter implements LoginContract.Presenter {
                             view.onFailureCallback(1001, "用户信息获取失败");
                             return;
                         }
-                        if (baseResponse.isSuccess()) {
-                            String dataJson = JsonUtils.toJson(baseResponse.getData());
-                            view.getUserinfo((UserBean) JsonUtils.fromJson(dataJson, UserBean.class));
-                            return;
-                        } else {
-                            view.onFailureCallback(baseResponse.getCode(), baseResponse.getMessage());
+                        if (!baseResponse.isSuccess()) {
+                            int code = baseResponse.getCode();
+                            String message = baseResponse.getMessage();
+                            view.onFailureCallback(code, message);
                             return;
                         }
+                        // 解析用户信息
+                        String dataJson = JsonUtils.toJson(baseResponse.getData());
+                        UserBean loginInfo = (UserBean) JsonUtils.fromJson(dataJson, UserBean.class);
+                        view.getUserinfo(loginInfo);
                     }
                 }, new Action1<Throwable>() {
 

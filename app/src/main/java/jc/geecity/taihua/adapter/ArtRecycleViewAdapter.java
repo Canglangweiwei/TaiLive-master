@@ -9,6 +9,8 @@ import com.aspsine.irecyclerview.baseadapter.AbsBaseArtRecycleViewAdapter;
 import com.bumptech.glide.Glide;
 
 import jc.geecity.taihua.R;
+import jc.geecity.taihua.base.AbsBaseActivity;
+import jc.geecity.taihua.me.UserinfoActivity;
 import jc.geecity.taihua.test.RecyclerBean;
 
 public class ArtRecycleViewAdapter extends AbsBaseArtRecycleViewAdapter<RecyclerBean> {
@@ -54,6 +56,12 @@ public class ArtRecycleViewAdapter extends AbsBaseArtRecycleViewAdapter<Recycler
                     .crossFade()
                     .dontAnimate()
                     .into(image);
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((AbsBaseActivity) mCtx).startNextActivity(null, UserinfoActivity.class);
+                }
+            });
         }
     }
 }

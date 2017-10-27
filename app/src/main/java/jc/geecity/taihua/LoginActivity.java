@@ -4,6 +4,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jaydenxiao.common.commonutils.MD5Util;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 
 import javax.inject.Inject;
@@ -112,7 +113,9 @@ public class LoginActivity extends AbsBaseActivity implements LoginContract.View
         username = mEditUsername.getText().toString().trim();
         password = mEditPassword.getText().toString().trim();
         startProgressDialog();
-        mPresenter.login(username, "b505ffed0d024130");
+        // 将密码进行md516位加密
+        String md5Password = MD5Util.getMD5String(password, 16, false);
+        mPresenter.login(username, md5Password);
     }
 
     /**
@@ -142,7 +145,7 @@ public class LoginActivity extends AbsBaseActivity implements LoginContract.View
         if (userBean == null)
             return;
         userBean.setUserName(username);
-        userBean.setPassword("b505ffed0d024130");
+        userBean.setPassword(password);
         // 保存用户信息
         AbsBaseApplication.sApp.setUserInfo(userBean);
         // 跳转到主页面

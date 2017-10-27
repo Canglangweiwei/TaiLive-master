@@ -19,9 +19,68 @@ import java.util.Map;
 
 /**
  * 用法：
+ * private final static int PAGE_REQUEST_CODE = 1001;
+   private static final int REQUEST_TAKE_PHOTO_PERMISSION = 222;
+
+   @OnClick({R.id.qdcode_scan})
+   void click_qdcode_scan(View view) {
+       // 权限申请
+       if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_TAKE_PHOTO_PERMISSION);
+       } else if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
+       } else if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
+       } else {
+            Toast.makeText(getActivity(), "跳转二维码扫描页面", Toast.LENGTH_SHORT).show();
+            // 扫描条形码和二维码
+            ZxingUtil.getInstance().decode(getActivity(), PAGE_REQUEST_CODE);
+       }
+   }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_TAKE_PHOTO_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 申请成功，扫描条形码和二维码
+                ZxingUtil.getInstance().decode(getActivity(), PAGE_REQUEST_CODE);
+            } else {
+                Toast.makeText(getActivity(), "相机权限被禁止", Toast.LENGTH_SHORT).show();
+            }
+                return;
+            }
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Bundle bundle = data.getExtras();
+            switch (requestCode) {
+                case PAGE_REQUEST_CODE:
+                    mTv03.setText(bundle.getString("scan_result"));
+                    break;
+            }
+        }
+  }
+ *
+ *
  * final ImageView image = (ImageView) findViewById(R.id.imageView);
- * Bitmap bitmap = ZxingUtil.getInstance().encodeAsBitmap(MainActivity.this, "http://www.89892528.com");
- * image.setImageBitmap(bitmap);
+ * try {
+        Bitmap bitmap = ZxingUtil.getInstance().encodeAsBitmap(getActivity(), "http://0.89892528.com");
+        imageView.setImageBitmap(bitmap);
+   } catch (WriterException e) {
+        e.printStackTrace();
+   }
+ *
+ * xml:
+ * <ImageView
+     android:id="@+id/imageView"
+     android:layout_width="220dp"
+     android:layout_height="220dp"
+     android:layout_gravity="center_horizontal"
+     android:contentDescription="@string/app_name" />
  */
 
 /**

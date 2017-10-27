@@ -3,6 +3,7 @@ package jc.geecity.taihua;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.jaydenxiao.common.commonutils.MD5Util;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 
 import javax.inject.Inject;
@@ -76,7 +77,8 @@ public class WelcomeActivity extends AbsBaseActivity implements LoginContract.Vi
             startNextActivity(null, LoginActivity.class, true);
             return;
         }
-        loginPresenter.login(username, password);
+        String md5Password = MD5Util.getMD5String(password, 16, false);
+        loginPresenter.login(username, md5Password);
     }
 
     @Override
@@ -94,7 +96,7 @@ public class WelcomeActivity extends AbsBaseActivity implements LoginContract.Vi
         if (userBean == null)
             return;
         userBean.setUserName(username);
-        userBean.setPassword("b505ffed0d024130");
+        userBean.setPassword(password);
         // 保存用户信息
         AbsBaseApplication.sApp.setUserInfo(userBean);
         // 跳转到主页面

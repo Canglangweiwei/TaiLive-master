@@ -9,7 +9,6 @@
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/photoPicker/photoPicker.iml" filepath="$PROJECT_DIR$/library/photoPicker/photoPicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/selectordialog/selectordialog.iml" filepath="$PROJECT_DIR$/library/selectordialog/selectordialog.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/zxing/zxing.iml" filepath="$PROJECT_DIR$/library/zxing/zxing.iml" />
     </modules>
   </component>
 </project>

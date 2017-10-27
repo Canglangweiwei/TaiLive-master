@@ -1,24 +1,11 @@
 package jc.geecity.taihua.home;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.zxing.WriterException;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 import com.jaydenxiao.common.commonwidget.NormalTitleBar;
-import com.library.zxing.ZxingUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -54,8 +41,6 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
     TextView mTv02;
     @Bind(R.id.textView03)
     TextView mTv03;
-    @Bind(R.id.imageView)
-    ImageView imageView;
 
     private List<TopAdBean> imgUrls;
 
@@ -185,64 +170,6 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
                         mTv02.setText("rxjava_okhttp_gson Error:\r\n" + throwable.getMessage());
                     }
                 });
-    }
-
-    private final static int PAGE_REQUEST_CODE = 1001;
-    private static final int REQUEST_TAKE_PHOTO_PERMISSION = 222;
-
-    @OnClick({R.id.qdcode_scan})
-    void click_qdcode_scan(View view) {
-        // 权限申请
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_TAKE_PHOTO_PERMISSION);
-        } else if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
-        } else if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
-        } else {
-            Toast.makeText(getActivity(), "跳转二维码扫描页面", Toast.LENGTH_SHORT).show();
-            /**
-             * 扫描条形码和二维码
-             */
-            ZxingUtil.getInstance().decode(getActivity(), PAGE_REQUEST_CODE);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_TAKE_PHOTO_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 申请成功，扫描条形码和二维码
-                ZxingUtil.getInstance().decode(getActivity(), PAGE_REQUEST_CODE);
-            } else {
-                Toast.makeText(getActivity(), "相机权限被禁止", Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            Bundle bundle = data.getExtras();
-            switch (requestCode) {
-                case PAGE_REQUEST_CODE:
-                    mTv03.setText(bundle.getString("scan_result"));
-                    break;
-            }
-        }
-    }
-
-    @OnClick({R.id.create_qdcode_scan})
-    void click_create_qdcode_scan(View view) {
-        try {
-            Bitmap bitmap = ZxingUtil.getInstance().encodeAsBitmap(getActivity(), "http://0.89892528.com");
-            imageView.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

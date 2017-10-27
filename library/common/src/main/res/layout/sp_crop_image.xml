@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:background="#2d2d2d">
 
-    <com.jaydenxiao.common.avatar.CircleImageView
+    <com.jaydenxiao.common.avatar.ClipImageView
         android:id="@+id/src_pic"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

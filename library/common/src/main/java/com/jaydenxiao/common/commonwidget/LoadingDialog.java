@@ -57,7 +57,7 @@ public class LoadingDialog {
 
         mLoadingDialog = new Dialog(mActivity, R.style.CustomProgressDialog);
         mLoadingDialog.setCancelable(true);
-        mLoadingDialog.setCanceledOnTouchOutside(false);
+        mLoadingDialog.setCanceledOnTouchOutside(true);
         mLoadingDialog.setContentView(mRootView,
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         if (!mActivity.isFinishing())

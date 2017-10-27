@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/library/irecyclerview" />
             <option value="$PROJECT_DIR$/library/photoPicker" />
             <option value="$PROJECT_DIR$/library/selectordialog" />
-            <option value="$PROJECT_DIR$/library/zxing" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

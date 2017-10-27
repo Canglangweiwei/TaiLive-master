@@ -8,6 +8,18 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 用于扫描二维码 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!--<uses-permission android:name="android.permission.FLASHLIGHT" />-->
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <application
         android:name=".base.AbsBaseApplication"
@@ -42,5 +54,36 @@
             android:name=".home.HomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <!-- 用户信息 -->
+        <activity
+            android:name=".me.UserinfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <activity
+            android:name="com.jaydenxiao.common.avatar.PreviewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <!-- 二维码扫描页面 -->
+        <!--<activity
+            android:name="com.library.zxing.CaptureActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentStatus_Theme"
+            android:windowSoftInputMode="stateHidden" />-->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.camera_photos.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 </manifest>
