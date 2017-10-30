@@ -38,6 +38,7 @@
         android:id="@+id/btn_to_cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/sp_photo_cancel_selector"
         android:paddingBottom="6dp"
