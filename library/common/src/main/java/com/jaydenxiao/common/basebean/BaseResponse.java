@@ -8,12 +8,12 @@ import java.io.Serializable;
  * on 2016.09.9:47
  */
 @SuppressWarnings("ALL")
-public class BaseResponse implements Serializable {
+public class BaseResponse<T> implements Serializable {
 
     private boolean success;
     private int code;
     private String message;
-    private Object data;
+    private T data;
 
     public BaseResponse() {
         super();
@@ -43,11 +43,11 @@ public class BaseResponse implements Serializable {
         this.message = message;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

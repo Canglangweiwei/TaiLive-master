@@ -3,12 +3,12 @@
     android:layout_height="match_parent"
     android:background="#2d2d2d">
 
-    <com.jaydenxiao.common.avatar.ClipImageView
+    <com.yuyh.library.imgsel.avatar.ClipImageView
         android:id="@+id/src_pic"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.jaydenxiao.common.avatar.ClipView
+    <com.yuyh.library.imgsel.avatar.ClipView
         android:id="@+id/clipview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

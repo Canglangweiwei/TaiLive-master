@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
-        <com.jaydenxiao.common.avatar.CircleImageView
+        <com.yuyh.library.imgsel.avatar.CircleImageView
             android:id="@+id/iv_head"
             android:layout_width="100dp"
             android:layout_height="100dp"

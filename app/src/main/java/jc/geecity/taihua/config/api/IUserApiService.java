@@ -1,9 +1,10 @@
 package jc.geecity.taihua.config.api;
 
-import com.jaydenxiao.common.basebean.BaseResponse;
-
+import jc.geecity.taihua.me.bean.LoginResultBean;
+import jc.geecity.taihua.test.TestResultBean;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -19,10 +20,13 @@ import rx.Observable;
  */
 public interface IUserApiService {
 
+    @GET("test/jsonData.php")
+    Observable<TestResultBean> test();
+
     /**
      * 获取用户信息
      */
     @FormUrlEncoded
     @POST("common/login.php")
-    Observable<BaseResponse> userLogin(@Field("username") String username, @Field("password") String password);
+    Observable<LoginResultBean> userLogin(@Field("username") String username, @Field("password") String password);
 }

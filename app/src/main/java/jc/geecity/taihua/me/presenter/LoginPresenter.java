@@ -2,19 +2,14 @@ package jc.geecity.taihua.me.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.jaydenxiao.common.basebean.BaseResponse;
-import com.jaydenxiao.common.commonutils.JsonUtils;
-
 import javax.inject.Inject;
 
-import jc.geecity.taihua.config.RetrofitFactory;
+import jc.geecity.taihua.config.httpclient.UserInfoHttpPost;
 import jc.geecity.taihua.me.Validator;
+import jc.geecity.taihua.me.bean.LoginResultBean;
 import jc.geecity.taihua.me.bean.UserBean;
 import jc.geecity.taihua.me.contract.LoginContract;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import rx.Subscriber;
 
 /**
  * 用户登录
@@ -23,7 +18,7 @@ import rx.schedulers.Schedulers;
 public class LoginPresenter implements LoginContract.Presenter {
 
     private LoginContract.View view;
-    private Subscription mSubscription;
+//    private Subscription mSubscription;
     private UserBean loginBean;
     private Validator validator;
 
@@ -41,35 +36,66 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void login(String username, String password) {
-        mSubscription = RetrofitFactory.get().getUserApiService().userLogin(username, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<BaseResponse>() {
+//        mSubscription = RetrofitFactory.get().getUserApiService().userLogin(username, password)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Action1<BaseResponse>() {
+//
+//                    @Override
+//                    public void call(BaseResponse baseResponse) {
+//                        if (null == baseResponse) {
+//                            view.onFailureCallback(1001, "用户信息获取失败");
+//                            return;
+//                        }
+//                        if (!baseResponse.isSuccess()) {
+//                            int code = baseResponse.getCode();
+//                            String message = baseResponse.getMessage();
+//                            view.onFailureCallback(code, message);
+//                            return;
+//                        }
+//                        // 解析用户信息
+//                        String dataJson = JsonUtils.toJson(baseResponse.getData());
+//                        UserBean loginInfo = (UserBean) JsonUtils.fromJson(dataJson, UserBean.class);
+//                        view.getUserinfo(loginInfo);
+//                    }
+//                }, new Action1<Throwable>() {
+//
+//                    @Override
+//                    public void call(Throwable throwable) {
+//                        view.onFailureCallback(throwable);
+//                    }
+//                });
+        UserInfoHttpPost userInfoHttpPost = new UserInfoHttpPost();
+        userInfoHttpPost.login(username, password, new Subscriber<LoginResultBean>() {
 
                     @Override
-                    public void call(BaseResponse baseResponse) {
-                        if (null == baseResponse) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(LoginResultBean loginResultBean) {
+                        if (null == loginResultBean) {
                             view.onFailureCallback(1001, "用户信息获取失败");
                             return;
                         }
-                        if (!baseResponse.isSuccess()) {
-                            int code = baseResponse.getCode();
-                            String message = baseResponse.getMessage();
+                        if (!loginResultBean.isSuccess()) {
+                            int code = loginResultBean.getCode();
+                            String message = loginResultBean.getMessage();
                             view.onFailureCallback(code, message);
                             return;
                         }
                         // 解析用户信息
-                        String dataJson = JsonUtils.toJson(baseResponse.getData());
-                        UserBean loginInfo = (UserBean) JsonUtils.fromJson(dataJson, UserBean.class);
+                        UserBean loginInfo = loginResultBean.getData();
                         view.getUserinfo(loginInfo);
                     }
-                }, new Action1<Throwable>() {
-
-                    @Override
-                    public void call(Throwable throwable) {
-                        view.onFailureCallback(throwable);
-                    }
-                });
+                }
+        );
     }
 
     @Override
@@ -79,10 +105,10 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void detachView() {
-        if (mSubscription != null
-                && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+//        if (mSubscription != null
+//                && !mSubscription.isUnsubscribed()) {
+//            mSubscription.unsubscribe();
+//        }
         view = null;
     }
 }

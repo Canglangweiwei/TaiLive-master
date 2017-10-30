@@ -3,7 +3,6 @@ package jc.geecity.taihua.home;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 import com.jaydenxiao.common.commonwidget.NormalTitleBar;
 import com.youth.banner.Banner;
@@ -12,20 +11,18 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import jc.geecity.taihua.R;
 import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseFragment;
+import jc.geecity.taihua.config.httpclient.UserInfoHttpPost;
 import jc.geecity.taihua.home.bean.TopAdBean;
-import jc.geecity.taihua.test.KeyValueModel;
-import jc.geecity.taihua.test.TestJsonProtocol;
-import jc.geecity.taihua.test.TestObjProtocol;
+import jc.geecity.taihua.test.TestBean;
+import jc.geecity.taihua.test.TestResultBean;
 import jc.geecity.taihua.util.BannerGlideImageLoader;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import rx.Subscriber;
 
 /**
  * 首页
@@ -40,8 +37,6 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
     TextView mTv01;
     @Bind(R.id.textView02)
     TextView mTv02;
-    @Bind(R.id.textView03)
-    TextView mTv03;
 
     private List<TopAdBean> imgUrls;
 
@@ -114,68 +109,35 @@ public class HomeFragment extends AbsBaseFragment implements OnBannerListener {
         mBanner.setOnBannerListener(this);
     }
 
-    @OnClick(R.id.rxjava_okhttp)
-    void click_rxjava_okhttp() {
-        TestJsonProtocol mTestProtocol = new TestJsonProtocol();
-        mTestProtocol.test8989Date()
-                .compose(this.<String>bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String dataJson) {
-                        Gson mGson = new Gson();
-                        KeyValueModel model = mGson.fromJson(dataJson, KeyValueModel.class);
-                        if (model == null)
-                            return;
-                        List<KeyValueModel.DataBean> modelList = model.getData();
-                        if (modelList == null || modelList.size() == 0)
-                            return;
-                        StringBuilder builder = new StringBuilder();
-                        builder.append(dataJson).append("\r\n");
-                        for (KeyValueModel.DataBean bean : modelList)
-                            builder.append(bean.toString()).append("\r\n");
-                        mTv01.setText("rxjava_okhttp Result:\r\n" + builder.toString());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mTv01.setText("rxjava_okhttp Error:\r\n" + throwable.getMessage());
-                    }
-                });
-    }
+    @OnClick(R.id.httpPost)
+    void click_httpPost() {
+        UserInfoHttpPost httpPost = new UserInfoHttpPost();
+        httpPost.testGroup(new Subscriber<TestResultBean>() {
+            @Override
+            public void onCompleted() {
 
-    @OnClick(R.id.rxjava_okhttp_Gson)
-    void click_rxjava_okhttp_gson() {
-        TreeMap<String, Object> params = new TreeMap<>();
-        params.put("id", 1);
-        params.put("name", "小鱼儿");
-        params.put("age", 18);
-        params.put("gender", "男");
-        params.put("addr", "青岛市市北区xxx路xxx大厦B座2001");
-        params.put("telphone", "15376753304");
-        TestObjProtocol mTestProtocol = new TestObjProtocol();
-        mTestProtocol.test8989Date(params)
-                .compose(this.<KeyValueModel>bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<KeyValueModel>() {
-                    @Override
-                    public void call(KeyValueModel dataModel) {
-                        if (dataModel == null)
-                            return;
-                        if (dataModel.getData() == null
-                                || dataModel.getData().size() == 0)
-                            return;
-                        StringBuilder builder = new StringBuilder();
-                        for (KeyValueModel.DataBean bean : dataModel.getData())
-                            builder.append(bean.toString()).append("\r\n");
-                        mTv02.setText("rxjava_okhttp_gson Result:\r\n" + builder.toString());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mTv02.setText("rxjava_okhttp_gson Error:\r\n" + throwable.getMessage());
-                    }
-                });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mTv02.setText("httpPost Error:\r\n" + e.getMessage());
+            }
+
+            @Override
+            public void onNext(TestResultBean testResultBean) {
+                if (testResultBean == null)
+                    return;
+                boolean success = testResultBean.isSuccess();
+                if (!success) {
+                    ToastUitl.showShort(testResultBean.getMessage());
+                    return;
+                }
+                StringBuilder builder = new StringBuilder();
+                for (TestBean bean : testResultBean.getData())
+                    builder.append(bean.toString()).append("\r\n");
+                mTv02.setText("httpPost Result:\r\n" + builder.toString());
+            }
+        });
     }
 
     @Override

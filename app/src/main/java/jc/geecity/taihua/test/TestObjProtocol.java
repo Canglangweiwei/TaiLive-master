@@ -17,7 +17,7 @@ public class TestObjProtocol extends BaseObjProtocol {
     /**
      * Delete请求
      */
-    public Observable<KeyValueModel> test8989Date(Map<String, Object> params) {
-        return createObservable(URL, XgoHttpClient.METHOD_GET, params, KeyValueModel.class);
+    public Observable<TestResultBean> test8989Date(Map<String, Object> params) {
+        return createObservable(URL, XgoHttpClient.METHOD_GET, params, TestResultBean.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.jaydenxiao.common.avatar;
+package com.yuyh.library.imgsel.avatar;
 
 import android.content.Context;
 import android.graphics.Bitmap;

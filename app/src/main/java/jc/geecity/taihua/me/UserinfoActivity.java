@@ -1,7 +1,6 @@
 package jc.geecity.taihua.me;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,21 +13,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.jaydenxiao.common.avatar.CircleImageView;
-import com.jaydenxiao.common.avatar.PreviewActivity;
-import com.jaydenxiao.common.avatar.SDPathUtils;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 import com.jaydenxiao.common.commonutils.XgoLog;
 import com.jaydenxiao.common.commonwidget.NormalTitleBar;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yuyh.library.imgsel.avatar.CameraSelectDialog;
+import com.yuyh.library.imgsel.avatar.CircleImageView;
+import com.yuyh.library.imgsel.avatar.PreviewActivity;
+import com.yuyh.library.imgsel.avatar.SDPathUtils;
 
 import java.io.File;
 
@@ -38,7 +33,8 @@ import jc.geecity.taihua.R;
 import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseActivity;
 
-public class UserinfoActivity extends AbsBaseActivity implements View.OnClickListener {
+public class UserinfoActivity extends AbsBaseActivity
+        implements CameraSelectDialog.OnCameraSelectListener {
 
     @Bind(R.id.ntb)
     NormalTitleBar ntb;
@@ -52,7 +48,7 @@ public class UserinfoActivity extends AbsBaseActivity implements View.OnClickLis
     @Bind(R.id.iv_head)
     CircleImageView ivHeadLogo;
 
-    private Dialog dialog;
+    private CameraSelectDialog dialog;
 
     @Override
     protected int initLayoutResID() {
@@ -72,7 +68,8 @@ public class UserinfoActivity extends AbsBaseActivity implements View.OnClickLis
     @Override
     protected void initUi() {
         ntb.setTitleText("用户信息");
-        initSheetDialog();
+        dialog = new CameraSelectDialog(this);
+        dialog.setListener(this);
     }
 
     @Override
@@ -93,35 +90,6 @@ public class UserinfoActivity extends AbsBaseActivity implements View.OnClickLis
     /**
      * 打开对话框
      */
-    private void initSheetDialog() {
-        View view = getLayoutInflater().inflate(R.layout.sp_photo_choose_dialog, null);
-        dialog = new Dialog(this, R.style.transparentFrameWindowStyle);
-        dialog.setContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setWindowAnimations(R.style.main_menu_animstyle);
-            WindowManager.LayoutParams wl = window.getAttributes();
-            wl.x = 0;
-            wl.y = getWindowManager().getDefaultDisplay().getHeight();
-            wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            dialog.onWindowAttributesChanged(wl);
-            dialog.setCanceledOnTouchOutside(true);
-        }
-        Button btnCamera = (Button) view.findViewById(R.id.btn_to_camera);
-        btnCamera.setOnClickListener(this);
-
-        Button btnPhoto = (Button) view.findViewById(R.id.btn_to_photo);
-        btnPhoto.setOnClickListener(this);
-
-        Button btnCancel = (Button) view.findViewById(R.id.btn_to_cancel);
-        btnCancel.setOnClickListener(this);
-    }
-
-    /**
-     * 打开对话框
-     */
     @OnClick({R.id.iv_head})
     void onClick() {
         if (!isFinishing()) {
@@ -130,31 +98,25 @@ public class UserinfoActivity extends AbsBaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onClick(View view) {
-        dialog.dismiss();
-        switch (view.getId()) {
-            case R.id.btn_to_camera:// 打开相机
-                if (ContextCompat.checkSelfPermission(UserinfoActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(UserinfoActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_TAKE_PHOTO_PERMISSION);
-                    return;
-                } else if (ContextCompat.checkSelfPermission(UserinfoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(UserinfoActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
-                    return;
-                } else if (ContextCompat.checkSelfPermission(UserinfoActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(UserinfoActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
-                    return;
-                } else {
-                    takePhoto();
-                }
-                break;
-            case R.id.btn_to_photo:// 打开相册
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, REQUEST_GALLERY_CODE);
-                break;
-            case R.id.btn_to_cancel:// 取消
-                break;
+    public void onCamera() {
+        // 打开相机
+        if (ContextCompat.checkSelfPermission(UserinfoActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(UserinfoActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_TAKE_PHOTO_PERMISSION);
+        } else if (ContextCompat.checkSelfPermission(UserinfoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(UserinfoActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
+        } else if (ContextCompat.checkSelfPermission(UserinfoActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(UserinfoActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO_PERMISSION);
+        } else {
+            takePhoto();
         }
+    }
+
+    @Override
+    public void onPhoto() {
+        // 打开相册
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intent, REQUEST_GALLERY_CODE);
     }
 
     /**
@@ -166,7 +128,8 @@ public class UserinfoActivity extends AbsBaseActivity implements View.OnClickLis
             openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(SDPathUtils.getCachePath(), "temp.jpg")));
             startActivityForResult(openCameraIntent, REQUEST_CAMERA_CODE);
         } else {
-            Uri imageUri = FileProvider.getUriForFile(UserinfoActivity.this, "com.camera_photos.fileprovider", new File(SDPathUtils.getCachePath(), "temp.jpg"));
+            Uri imageUri = FileProvider.getUriForFile(UserinfoActivity.this, "com.camera_photos.fileprovider",
+                    new File(SDPathUtils.getCachePath(), "temp.jpg"));
             openCameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(openCameraIntent, REQUEST_CAMERA_CODE);

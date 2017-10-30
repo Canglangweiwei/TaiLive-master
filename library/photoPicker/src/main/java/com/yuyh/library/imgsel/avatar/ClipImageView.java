@@ -1,4 +1,4 @@
-package com.jaydenxiao.common.avatar;
+package com.yuyh.library.imgsel.avatar;
 
 import android.annotation.TargetApi;
 import android.content.Context;

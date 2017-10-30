@@ -62,7 +62,7 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
         <activity
-            android:name="com.jaydenxiao.common.avatar.PreviewActivity"
+            android:name="com.yuyh.library.imgsel.avatar.PreviewActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
