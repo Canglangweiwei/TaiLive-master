@@ -1,6 +1,8 @@
 package jc.geecity.taihua.config.api;
 
-import jc.geecity.taihua.me.bean.LoginResultBean;
+import com.jaydenxiao.common.basebean.BaseResponse;
+
+import jc.geecity.taihua.me.bean.UserBean;
 import jc.geecity.taihua.test.TestResultBean;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -28,5 +30,5 @@ public interface IUserApiService {
      */
     @FormUrlEncoded
     @POST("common/login.php")
-    Observable<LoginResultBean> userLogin(@Field("username") String username, @Field("password") String password);
+    Observable<BaseResponse<UserBean>> userLogin(@Field("username") String username, @Field("password") String password);
 }

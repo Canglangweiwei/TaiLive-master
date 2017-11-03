@@ -2,11 +2,12 @@ package jc.geecity.taihua.me.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.jaydenxiao.common.basebean.BaseResponse;
+
 import javax.inject.Inject;
 
 import jc.geecity.taihua.config.httpclient.UserInfoHttpPost;
 import jc.geecity.taihua.me.Validator;
-import jc.geecity.taihua.me.bean.LoginResultBean;
 import jc.geecity.taihua.me.bean.UserBean;
 import jc.geecity.taihua.me.contract.LoginContract;
 import rx.Subscriber;
@@ -18,7 +19,6 @@ import rx.Subscriber;
 public class LoginPresenter implements LoginContract.Presenter {
 
     private LoginContract.View view;
-//    private Subscription mSubscription;
     private UserBean loginBean;
     private Validator validator;
 
@@ -66,7 +66,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 //                    }
 //                });
         UserInfoHttpPost userInfoHttpPost = new UserInfoHttpPost();
-        userInfoHttpPost.login(username, password, new Subscriber<LoginResultBean>() {
+        userInfoHttpPost.login(username, password, new Subscriber<BaseResponse<UserBean>>() {
 
                     @Override
                     public void onCompleted() {
@@ -79,7 +79,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(LoginResultBean loginResultBean) {
+                    public void onNext(BaseResponse<UserBean> loginResultBean) {
                         if (null == loginResultBean) {
                             view.onFailureCallback(1001, "用户信息获取失败");
                             return;
@@ -105,10 +105,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void detachView() {
-//        if (mSubscription != null
-//                && !mSubscription.isUnsubscribed()) {
-//            mSubscription.unsubscribe();
-//        }
         view = null;
     }
 }

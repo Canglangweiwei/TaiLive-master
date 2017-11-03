@@ -1,7 +1,9 @@
 package jc.geecity.taihua.config.httpclient;
 
+import com.jaydenxiao.common.basebean.BaseResponse;
+
 import jc.geecity.taihua.config.RetrofitFactory;
-import jc.geecity.taihua.me.bean.LoginResultBean;
+import jc.geecity.taihua.me.bean.UserBean;
 import jc.geecity.taihua.test.TestResultBean;
 import rx.Subscriber;
 
@@ -16,7 +18,7 @@ public class UserInfoHttpPost {
     /**
      * 登录
      */
-    public void login(String username, String password, Subscriber<LoginResultBean> subscriber) {
+    public void login(String username, String password, Subscriber<BaseResponse<UserBean>> subscriber) {
         httpRetrofit.httpSubscribe(httpRetrofit.getUserApiService().userLogin(username, password), subscriber);
     }
 

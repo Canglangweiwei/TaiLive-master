@@ -1,13 +1,15 @@
 package jc.geecity.taihua.community;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
+import com.aspsine.irecyclerview.gallery.BaseLoopGallery;
+import com.jaydenxiao.common.commonutils.ImageLoaderUtils;
 import com.jaydenxiao.common.commonutils.ToastUitl;
 import com.jaydenxiao.common.commonwidget.NormalTitleBar;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
+import com.jaydenxiao.common.gridimageview.AspectImageView;
+import com.mcxtzhang.commonadapter.rv.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +19,16 @@ import jc.geecity.taihua.R;
 import jc.geecity.taihua.app.AbsAppComponent;
 import jc.geecity.taihua.base.AbsBaseFragment;
 import jc.geecity.taihua.home.bean.TopAdBean;
-import jc.geecity.taihua.util.BannerGlideImageLoader;
 
 /**
  * 社区
  */
-public class CommunityFragment extends AbsBaseFragment implements OnBannerListener {
+public class CommunityFragment extends AbsBaseFragment {
 
     @Bind(R.id.ntb)
     NormalTitleBar ntb;
-    @Bind(R.id.communityFrg_banner)
-    Banner mBanner;
+    @Bind(R.id.alyLoopGallery)
+    BaseLoopGallery alyLoopGallery;
     @Bind(R.id.textView)
     TextView mTv;
 
@@ -63,61 +64,38 @@ public class CommunityFragment extends AbsBaseFragment implements OnBannerListen
 
     @Override
     protected void initDatas() {
-        imgUrls = new ArrayList<>();
+        List<String> datas = new ArrayList<>();
+        datas.add("http://imgs.ebrun.com/resources/2016_03/2016_03_25/201603259771458878793312_origin.jpg");
+        datas.add("http://p14.go007.com/2014_11_02_05/a03541088cce31b8_1.jpg");
+        datas.add("http://news.k618.cn/tech/201604/W020160407281077548026.jpg");
+        datas.add("http://www.kejik.com/image/1460343965520.jpg");
+        datas.add("http://cn.chinadaily.com.cn/img/attachement/jpg/site1/20160318/eca86bd77be61855f1b81c.jpg");
+        datas.add("http://imgs.ebrun.com/resources/2016_04/2016_04_12/201604124411460430531500.jpg");
+        datas.add("http://imgs.ebrun.com/resources/2016_04/2016_04_24/201604244971461460826484_origin.jpeg");
+        datas.add("http://www.lnmoto.cn/bbs/data/attachment/forum/201408/12/074018gshshia3is1cw3sg.jpg");
 
-        TopAdBean bean1 = new TopAdBean();
-        bean1.setId(1);
-        bean1.setTitle("大桶水");
-        bean1.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/201781610363506.jpg");
+        alyLoopGallery.setDatasAndLayoutId(datas, R.layout.griditem_image, new BaseLoopGallery.BindDataListener<String>() {
 
-        TopAdBean bean2 = new TopAdBean();
-        bean2.setId(2);
-        bean2.setTitle("花街小镇");
-        bean2.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/201798163638278.jpg");
+            @Override
+            public void onBindData(ViewHolder holder, final String data) {
+                AspectImageView imageView = holder.getView(R.id.asp_grid_item_image);
+//                Picasso.with(holder.itemView.getContext())
+//                        .load(data)
+//                        .into(imageView);
+                ImageLoaderUtils.display(holder.itemView.getContext(), imageView, data);
+                imageView.setOnClickListener(new View.OnClickListener() {
 
-        TopAdBean bean3 = new TopAdBean();
-        bean3.setId(3);
-        bean3.setTitle("缴费活动");
-        bean3.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/2017915103118909.jpg");
-
-        TopAdBean bean4 = new TopAdBean();
-        bean4.setId(4);
-        bean4.setTitle("家政");
-        bean4.setImage("http://221.215.1.228:8001/HisenseUpload/ad_photo/2017816155632334.jpg");
-
-        imgUrls.add(bean1);
-        imgUrls.add(bean2);
-        imgUrls.add(bean3);
-        imgUrls.add(bean4);
-
-        mBanner.setIndicatorGravity(BannerConfig.RIGHT);
-        mBanner.setBannerStyle(BannerConfig.NUM_INDICATOR);// 显示数字指示器
-        mBanner.setImages(imgUrls)
-                .setImageLoader(new BannerGlideImageLoader())
-                .start();
+                    @Override
+                    public void onClick(View v) {
+                        ToastUitl.showShort(data);
+                    }
+                });
+            }
+        });
     }
 
     @Override
     protected void initListener() {
-        mBanner.setOnBannerListener(this);
-    }
 
-    @Override
-    public void OnBannerClick(int position) {
-        ToastUitl.showShort("我点击了第" + (position + 1) + "广告：" + imgUrls.get(position).getTitle());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // 开始轮播
-        mBanner.startAutoPlay();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        // 结束轮播
-        mBanner.stopAutoPlay();
     }
 }

@@ -1,13 +1,11 @@
 package jc.geecity.taihua.home;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.jaydenxiao.common.commonutils.ToastUitl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +26,6 @@ import jc.geecity.taihua.service.ServiceFragment;
 @SuppressWarnings("ALL")
 public class HomeActivity extends AbsBaseActivity {
 
-    @Bind(R.id.drawer_layout)
-    LinearLayout drawerLayout;
     @Bind(R.id.bottom_navigation)
     AHBottomNavigation mAhBottomNavigation;
 
@@ -130,16 +126,9 @@ public class HomeActivity extends AbsBaseActivity {
     public void onBackPressed() {
         if (System.currentTimeMillis() - newTime > 2000) {
             newTime = System.currentTimeMillis();
-            Snackbar snackbar = Snackbar.make(drawerLayout, getString(R.string.press_twice_exit), Snackbar.LENGTH_SHORT);
-            snackbar.setAction(R.string.exit_directly, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AbsBaseApplication.get(getApplicationContext()).finishAllActivity();
-                }
-            });
-            snackbar.show();
+            ToastUitl.showShort(getString(R.string.press_twice_exit));
         } else {
-            moveTaskToBack(true);
+            AbsBaseApplication.get(getApplicationContext()).finishAllActivity();
         }
     }
 }
