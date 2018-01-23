@@ -204,7 +204,8 @@ public class UserinfoActivity extends AbsBaseActivity
                     .cacheInMemory(true)
                     .cacheOnDisk(true)
                     .considerExifParams(true)
-                    .bitmapConfig(Bitmap.Config.RGB_565).build();
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .build();
         }
         XgoLog.logd("图片地址：" + imageUrl);
         ImageLoader.getInstance().displayImage(imageUrl, imageView, options);
